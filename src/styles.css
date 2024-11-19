@@ -1,0 +1,136 @@
+body{
+    margin: 0px;
+    padding: 0px;
+}
+
+.navBar{
+    border: 1px solid;
+    width: 100vw;
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+#services{
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    /* position: fixed; */
+    height: 100%;
+    width: 300px;
+    align-items: center;
+    justify-content: center;
+
+}
+
+#dropDownServices{
+    background-color: white;
+    z-index: 10;
+    margin-top: 400px;
+    position: fixed;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    height: 300px;
+    justify-content:space-evenly;
+    border: 1px solid;
+    width: 300px;
+    text-align: center;
+}
+
+#dropDownServices h1:hover {
+    background-color: bisque;
+    cursor: pointer;
+    text-align: center;
+}
+#dropDownServices h1{
+    height: 40px;
+}
+h1{ 
+    padding: 0px;
+    margin: 0px;
+}
+
+.carouselContainer{
+    border: 1px solid;
+    width: 100vw;
+    height: 500px;
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+
+.whiteSpace{
+    background-color: white;
+    z-index: 100;
+    
+    flex-grow: 1;
+    height: 500px;
+    width: 33vw;
+    position: absolute;
+   
+}
+
+.whiteSpace1{
+    left: 0;
+
+}
+
+.whiteSpace2{
+    right: 0;
+}
+
+#slider{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    width: 110vw;
+    padding: 0px;
+    margin: 0px;
+    position: relative;
+
+}
+#imgContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* .img2{
+    transform: translateX(-100%);
+}
+.img3{
+    transform: translateX(100%);
+} */
+
+  .image {
+    transition: transform 0.5s ease-in-out;
+    flex-grow: 0;
+    width: 700px;
+    height: 500px;
+    
+  }
+  
+  .image-1 {
+    transform: translateX(0);
+  }
+  
+  .image-2 {
+    transform: translateX(100%);
+  }
+  
+  .image-container:hover .image-1 {
+    transform: translateX(-100%);
+  }
+  
+  .image-container:hover .image-2 {
+    transform: translateX(0);
+  }
+  
