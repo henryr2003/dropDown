@@ -1,3 +1,4 @@
+let autoSlideInterval;
 import "./styles.css";
 import img1 from "./img/sackboyMad.png";
 import cowImg from "./img/cow.png";
@@ -19,39 +20,35 @@ button.addEventListener("mouseleave", () => {
 });
 
 createSlider();
-function createImages(){
 
-}
 function createSlider() {
     const currentImg = parseInt(localStorage.getItem("currentImg"));
 
     // console.log(`slider currentImg : ${JSON.parse(localStorage.getItem("currentImg"))}`);
 
     let current = imgList[currentImg];
-   
+
     let after;
     let before;
 
-    if(currentImg - 1 < 0){
-        before = imgList[imgList.length-1];
+    if (currentImg - 1 < 0) {
+        before = imgList[imgList.length - 1];
+    } else {
+        before = imgList[currentImg - 1];
     }
-    else{
-        before = imgList[currentImg-1];
-    }
-    
-    
-    if(currentImg + 1 > imgList.length-1){
+
+    if (currentImg + 1 > imgList.length - 1) {
         console.log("after is 0");
         after = imgList[0];
-    }
-    else{
+    } else {
         console.log("after is plus one");
-        after = imgList[currentImg+1];
+        after = imgList[currentImg + 1];
     }
-   
-  
 
+    const carouselContainer = document.getElementById("carouselContainer");
     const slider = document.getElementById("slider");
+    const selectorContainer = document.createElement("div");
+    selectorContainer.id = "selectorContainer";
     const whiteSpace = document.createElement("div");
     const whiteSpace2 = document.createElement("div");
     whiteSpace.classList.add("whiteSpace");
@@ -93,6 +90,9 @@ function createSlider() {
 
     img.style.height = "500px";
 
+   
+    carouselContainer.appendChild(selectorContainer);
+
     const nextButton = document.getElementById("nextButton");
     const backButton = document.getElementById("backButton");
 
@@ -100,141 +100,166 @@ function createSlider() {
     let img2Pos = 0;
     let img3Pos = 0;
 
-
     nextButton.replaceWith(nextButton.cloneNode(true));
     backButton.replaceWith(backButton.cloneNode(true));
 
     // Reassign the buttons after replacement
     const newNextButton = document.getElementById("nextButton");
     const newBackButton = document.getElementById("backButton");
+    
+    for (let i = 0; i < imgList.length; i++) {
+        const circle = document.createElement("button");
+        circle.classList.add("circle");
+        if (i == currentImg) {
+            circle.style.backgroundColor = "blue";
+        }
+        circle.id = i;
+        selectorContainer.appendChild(circle);
+
+        circle.addEventListener("click", () => {
+            if (currentImg != circle.id) {
+                
+                    resetAutoSlide();
+                    newBackButton.disabled = true;
+                    newNextButton.disabled = true;
+                    //go next
+                    if (currentImg < circle.id){
+                        img3.src = imgList[circle.id];
+                        img.style.transform = `translateX(-100%)`;
+                        img3.style.transform = `translateX(-100%)`;
+                        
+                    }
+
+                    else{
+                        img2.src = imgList[circle.id];
+                        img.style.transform = `translateX(100%)`;
+                        img2.style.transform = `translateX(100%)`;
+                    }
+                        
+                    setTimeout(() => {
+                        checkImg(circle.id);
+                        newBackButton.disabled = false; // Re-enable the button after 3 seconds
+                        newNextButton.disabled = false;
+                        slider.replaceChildren();
+                        whiteSpace.remove();
+                        whiteSpace2.remove();
+                        selectorContainer.remove();
+                        createSlider();
+                    }, 1000);
+             
+            }
+        });
+    }
+
+
+    function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = setInterval(() => {
+            newBackButton.disabled = true; // Re-enable the button after 3 seconds
+            newNextButton.disabled = true;
+            img.style.transform = `translateX(-100%)`;
+            img3.style.transform = `translateX(-100%)`;
+
+            setTimeout(() => {
+                checkImg("next");
+                newBackButton.disabled = false; // Re-enable the button after 3 seconds
+                newNextButton.disabled = false;
+                slider.replaceChildren();
+                whiteSpace.remove();
+                whiteSpace2.remove();
+                selectorContainer.remove();
+                createSlider();
+            }, 1000);
+        }, 5000);
+    }
 
     newBackButton.addEventListener("click", () => {
-        
+        resetAutoSlide();
         newBackButton.disabled = true;
-        imgPos = 100;
-        img2Pos = 100;
+        newNextButton.disabled = true;
 
-        // console.log(imgPos);
-        // console.log(img2Pos);
-        // console.log(img3Pos);
-
-        if (img3Pos != 0) {
-            console.log("yes3");
-            img3.style.transform = "translateX(0%)";
-            img.style.transform = "translateX(0%)";
-            img2.style.transform = "translateX(0%)";
-
-            imgPos = 0;
-            img2Pos = 0;
-            img3Pos = 0;
-
-            console.log("reset 1 2");
-        } else {
-            img.style.transform = `translateX(${imgPos}%)`;
-            img2.style.transform = `translateX(${img2Pos}%)`;
-        }
+        img.style.transform = `translateX(100%)`;
+        img2.style.transform = `translateX(100%)`;
 
         setTimeout(() => {
             checkImg("back");
             newBackButton.disabled = false; // Re-enable the button after 3 seconds
+            newNextButton.disabled = false;
             slider.replaceChildren();
             whiteSpace.remove();
             whiteSpace2.remove();
+            selectorContainer.remove();
             createSlider();
-        }, 1000); 
-        
+        }, 1000);
     });
 
     newNextButton.addEventListener("click", () => {
-        
+        resetAutoSlide();
         newNextButton.disabled = true;
-        
-        // console.log(imgPos);
-        // console.log(img2Pos);
-        // console.log(img3Pos);
+        newBackButton.disabled = true;
 
-        imgPos = -100;
-        img3Pos = -100;
-
-        if (img2Pos != 0) {
-            // console.log("yes2");
-            img3.style.transform = "translateX(0%)";
-            img.style.transform = "translateX(0%)";
-            img2.style.transform = "translateX(0%)";
-
-            imgPos = 0;
-            img2Pos = 0;
-            img3Pos = 0;
-
-            console.log("reset 1 2");
-        } else {
-            img.style.transform = `translateX(${imgPos}%)`;
-            img3.style.transform = `translateX(${img3Pos}%)`;
-        }
+        img.style.transform = `translateX(-100%)`;
+        img3.style.transform = `translateX(-100%)`;
 
         setTimeout(() => {
             checkImg("next");
             newNextButton.disabled = false; // Re-enable the button after 3 seconds
+            newBackButton.disabled = false;
             slider.replaceChildren();
             whiteSpace.remove();
             whiteSpace2.remove();
+            selectorContainer.remove();
             createSlider();
-        }, 1000); 
-
-        
+        }, 1000);
     });
+
+    resetAutoSlide();
 }
 
-function checkImg(button){
+function checkImg(button) {
     console.log("check is IMG");
-    console.log(`currentImg before: ${JSON.parse(localStorage.getItem("currentImg"))}`);
+    console.log(
+        `currentImg before: ${JSON.parse(localStorage.getItem("currentImg"))}`
+    );
     console.log(`current button: ${button}`);
     let currentImg = JSON.parse(localStorage.getItem("currentImg"));
-    
+
     let newImg;
 
-    if(button == "next"){
-        if(currentImg){
-            if(currentImg < imgList.length-1){
-                localStorage.setItem("currentImg", JSON.stringify(currentImg + 1));
-            }
-            else{
+    if (button == "next") {
+        if (currentImg) {
+            if (currentImg < imgList.length - 1) {
+                localStorage.setItem(
+                    "currentImg",
+                    JSON.stringify(currentImg + 1)
+                );
+            } else {
                 localStorage.setItem("currentImg", "0");
             }
-            
-        }
-        else{
+        } else {
             localStorage.setItem("currentImg", "1");
-    
+
             console.log("no items");
         }
-    }
-    else{
-        
-        if(currentImg != "" || currentImg == 0){ 
-            
-
-            if(currentImg > 0){
-               
-                localStorage.setItem("currentImg",currentImg - 1);
+    } else if (button == "back") {
+        if (currentImg != "" || currentImg == 0) {
+            if (currentImg > 0) {
+                localStorage.setItem("currentImg", currentImg - 1);
+            } else {
+                localStorage.setItem("currentImg", imgList.length - 1);
             }
-            else{
-                
-                localStorage.setItem("currentImg", imgList.length-1);
-            }
-            
-        }
-        else{
+        } else {
             localStorage.setItem("currentImg", "1");
-    
+
             console.log("no items");
         }
+    } else {
+        localStorage.setItem("currentImg", button);
     }
 
-    console.log(`currentImg after: ${JSON.parse(localStorage.getItem("currentImg"))}`);
-
-    
-    
+    console.log(
+        `currentImg after: ${JSON.parse(localStorage.getItem("currentImg"))}`
+    );
 }
 
 const testButton = document.getElementById("testButton");
