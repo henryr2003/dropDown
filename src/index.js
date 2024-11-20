@@ -11,7 +11,7 @@ const dropDown = document.getElementById("dropDownServices");
 const imgList = [img1, cowImg, roosterImg, bingImg, guyImg, picardiaImg];
 const button = document.getElementById("services");
 
-if(!localStorage.getItem("currentImg")){
+if (!localStorage.getItem("currentImg")) {
     localStorage.setItem("currentImg", 0);
 }
 
@@ -42,10 +42,8 @@ function createSlider() {
     }
 
     if (currentImg + 1 > imgList.length - 1) {
-       
         after = imgList[0];
     } else {
-  
         after = imgList[currentImg + 1];
     }
 
@@ -94,7 +92,6 @@ function createSlider() {
 
     img.style.height = "500px";
 
-   
     carouselContainer.appendChild(selectorContainer);
 
     const nextButton = document.getElementById("nextButton");
@@ -110,7 +107,7 @@ function createSlider() {
     // Reassign the buttons after replacement
     const newNextButton = document.getElementById("nextButton");
     const newBackButton = document.getElementById("backButton");
-    
+
     for (let i = 0; i < imgList.length; i++) {
         const circle = document.createElement("button");
         circle.classList.add("circle");
@@ -122,39 +119,33 @@ function createSlider() {
 
         circle.addEventListener("click", () => {
             if (currentImg != circle.id) {
-                
-                    resetAutoSlide();
-                    newBackButton.disabled = true;
-                    newNextButton.disabled = true;
-                    //go next
-                    if (currentImg < circle.id){
-                        img3.src = imgList[circle.id];
-                        img.style.transform = `translateX(-100%)`;
-                        img3.style.transform = `translateX(-100%)`;
-                        
-                    }
+                resetAutoSlide();
+                newBackButton.disabled = true;
+                newNextButton.disabled = true;
+                //go next
+                if (currentImg < circle.id) {
+                    img3.src = imgList[circle.id];
+                    img.style.transform = `translateX(-100%)`;
+                    img3.style.transform = `translateX(-100%)`;
+                } else {
+                    img2.src = imgList[circle.id];
+                    img.style.transform = `translateX(100%)`;
+                    img2.style.transform = `translateX(100%)`;
+                }
 
-                    else{
-                        img2.src = imgList[circle.id];
-                        img.style.transform = `translateX(100%)`;
-                        img2.style.transform = `translateX(100%)`;
-                    }
-                        
-                    setTimeout(() => {
-                        checkImg(circle.id);
-                        newBackButton.disabled = false; // Re-enable the button after 3 seconds
-                        newNextButton.disabled = false;
-                        slider.replaceChildren();
-                        whiteSpace.remove();
-                        whiteSpace2.remove();
-                        selectorContainer.remove();
-                        createSlider();
-                    }, 1000);
-             
+                setTimeout(() => {
+                    checkImg(circle.id);
+                    newBackButton.disabled = false; // Re-enable the button after 3 seconds
+                    newNextButton.disabled = false;
+                    slider.replaceChildren();
+                    whiteSpace.remove();
+                    whiteSpace2.remove();
+                    selectorContainer.remove();
+                    createSlider();
+                }, 1000);
             }
         });
     }
-
 
     function resetAutoSlide() {
         clearInterval(autoSlideInterval);
@@ -221,8 +212,6 @@ function createSlider() {
 }
 
 function checkImg(button) {
-    
-   
     let currentImg = JSON.parse(localStorage.getItem("currentImg"));
 
     let newImg;
@@ -239,7 +228,6 @@ function checkImg(button) {
             }
         } else {
             localStorage.setItem("currentImg", "1");
-
         }
     } else if (button == "back") {
         if (currentImg != "" || currentImg == 0) {
@@ -250,19 +238,8 @@ function checkImg(button) {
             }
         } else {
             localStorage.setItem("currentImg", "1");
-
-            
         }
     } else {
         localStorage.setItem("currentImg", button);
     }
-
-    
-    
-
-const testButton = document.getElementById("testButton");
-
-testButton.addEventListener("click", () => {
-    const mainImg = document.getElementById("mainImg");
-    mainImg.src = cowImg;
-})
+}
