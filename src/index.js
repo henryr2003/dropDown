@@ -42,10 +42,10 @@ function createSlider() {
     }
 
     if (currentImg + 1 > imgList.length - 1) {
-        console.log("after is 0");
+       
         after = imgList[0];
     } else {
-        console.log("after is plus one");
+  
         after = imgList[currentImg + 1];
     }
 
@@ -221,11 +221,8 @@ function createSlider() {
 }
 
 function checkImg(button) {
-    console.log("check is IMG");
-    console.log(
-        `currentImg before: ${JSON.parse(localStorage.getItem("currentImg"))}`
-    );
-    console.log(`current button: ${button}`);
+    
+   
     let currentImg = JSON.parse(localStorage.getItem("currentImg"));
 
     let newImg;
@@ -243,7 +240,6 @@ function checkImg(button) {
         } else {
             localStorage.setItem("currentImg", "1");
 
-            console.log("no items");
         }
     } else if (button == "back") {
         if (currentImg != "" || currentImg == 0) {
@@ -255,20 +251,18 @@ function checkImg(button) {
         } else {
             localStorage.setItem("currentImg", "1");
 
-            console.log("no items");
+            
         }
     } else {
         localStorage.setItem("currentImg", button);
     }
 
-    console.log(
-        `currentImg after: ${JSON.parse(localStorage.getItem("currentImg"))}`
-    );
-}
+    
+    
 
 const testButton = document.getElementById("testButton");
 
 testButton.addEventListener("click", () => {
     const mainImg = document.getElementById("mainImg");
     mainImg.src = cowImg;
-});
+})
