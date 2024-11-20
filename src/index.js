@@ -11,6 +11,10 @@ const dropDown = document.getElementById("dropDownServices");
 const imgList = [img1, cowImg, roosterImg, bingImg, guyImg, picardiaImg];
 const button = document.getElementById("services");
 
+if(!localStorage.getItem("currentImg")){
+    localStorage.setItem("currentImg", 0);
+}
+
 button.addEventListener("mouseenter", () => {
     dropDown.style.display = "flex";
 });
